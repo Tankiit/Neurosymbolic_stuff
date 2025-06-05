@@ -6,6 +6,10 @@ from typing import Dict, List, Tuple, Optional
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
+from torch.utils.data import Dataset, DataLoader
+from PIL import Image
+import os
+import pandas as pd
 
 class ConceptDiscoveryEngine(nn.Module):
     """
@@ -444,23 +448,81 @@ def run_concept_discovery_experiment():
             print(f"  {term['coefficient']:.3f} × {term['term']}")
 
 
-def load_celeba_dataset(root_dir: str = "./data", 
-                        batch_size: int = 64,
-                        num_workers: int = 4):
-    """
-    Load the CelebA dataset using torchvision
-    
-    Args:
-        root_dir: Directory to store the dataset
-        batch_size: Batch size for dataloader
-        num_workers: Number of workers for dataloader
+class CustomCelebADataset(Dataset):
+    """Custom CelebA dataset loader that works with the existing file structure"""
+    def __init__(self, 
+                 root_dir: str,
+                 split: str = 'train',
+                 transform=None):
+        """
+        Args:
+            root_dir: Directory with the CelebA dataset
+            split: 'train', 'valid', or 'test'
+            transform: Optional transform to be applied on images
+        """
+        self.root_dir = root_dir
+        self.transform = transform
+        self.split = split
         
-    Returns:
-        train_loader, val_loader: DataLoaders for training and validation
-    """
-    from torchvision import datasets, transforms
-    from torch.utils.data import DataLoader
+        # Load attributes
+        attr_file = os.path.join(root_dir, 'list_attr_celeba.txt')
+        self.attr_df = pd.read_csv(attr_file, sep='\s+', skiprows=1)
+        
+        # Load split information
+        split_file = os.path.join(root_dir, 'list_eval_partition.txt')
+        split_df = pd.read_csv(split_file, sep='\s+', header=None, names=['image_id', 'split'])
+        
+        # Map split values (0: train, 1: valid, 2: test)
+        split_map = {0: 'train', 1: 'valid', 2: 'test'}
+        split_df['split'] = split_df['split'].map(split_map)
+        
+        # Filter for the requested split
+        self.split_df = split_df[split_df['split'] == split]
+        
+        # Get image paths and attributes for this split
+        self.image_ids = self.split_df['image_id'].values
+        self.attributes = self.attr_df.loc[self.image_ids].values
+        
+        # Convert attributes to binary (1 for positive, 0 for negative)
+        self.attributes = (self.attributes > 0).astype(np.float32)
+        
+        # Get attribute names
+        self.attr_names = list(self.attr_df.columns)
+        
+        print(f"Loaded {len(self.image_ids)} images for {split} split")
+        print(f"Number of attributes: {len(self.attr_names)}")
     
+    def __len__(self):
+        return len(self.image_ids)
+    
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+        
+        # Get image path
+        img_name = self.image_ids[idx]
+        img_path = os.path.join(self.root_dir, 'img_align_celeba', img_name)
+        
+        # Load image
+        image = Image.open(img_path).convert('RGB')
+        
+        # Apply transforms
+        if self.transform:
+            image = self.transform(image)
+        
+        # Get attributes
+        attributes = torch.FloatTensor(self.attributes[idx])
+        
+        return image, attributes, idx
+
+def load_celeba_dataset(root_dir: str = "/Users/cril/tanmoy/research/data/img_align_celeba", 
+                       batch_size: int = 64,
+                       num_workers: int = 4):
+    """
+    Load the CelebA dataset using our custom dataset loader
+    """
+    from torchvision import transforms
+
     # Standard transforms for CelebA
     transform = transforms.Compose([
         transforms.Resize((178, 178)),
@@ -468,30 +530,43 @@ def load_celeba_dataset(root_dir: str = "./data",
         transforms.ToTensor(),
         transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
-    
-    # Load datasets
-    train_dataset = datasets.CelebA(root=root_dir, 
-                                   split='train',
-                                   target_type='attr',
-                                   transform=transform,
-                                   download=True)
-    
-    val_dataset = datasets.CelebA(root=root_dir, 
-                                 split='valid',
-                                 target_type='attr',
-                                 transform=transform,
-                                 download=True)
-    
+
+    # Create datasets
+    try:
+        train_dataset = CustomCelebADataset(
+            root_dir=root_dir,
+            split='train',
+            transform=transform
+        )
+        
+        val_dataset = CustomCelebADataset(
+            root_dir=root_dir,
+            split='valid',
+            transform=transform
+        )
+    except Exception as e:
+        print(f"\nError loading dataset: {str(e)}")
+        print(f"Please ensure the dataset is properly organized in: {root_dir}/")
+        print("Required files:")
+        print("- img_align_celeba/ (directory with images)")
+        print("- list_attr_celeba.txt")
+        print("- list_eval_partition.txt")
+        raise
+
     # Create dataloaders
-    train_loader = DataLoader(train_dataset, 
-                             batch_size=batch_size,
-                             shuffle=True,
-                             num_workers=num_workers)
+    train_loader = DataLoader(
+        train_dataset, 
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers
+    )
     
-    val_loader = DataLoader(val_dataset,
-                           batch_size=batch_size,
-                           shuffle=False,
-                           num_workers=num_workers)
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers
+    )
     
     return train_loader, val_loader
 
