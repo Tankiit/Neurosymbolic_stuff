@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and outputs
+*.log
+logs/
+artifacts/
+out/
+build/
+dist/
+coverage/
+htmlcov/
+
+# Editors / IDE
+.vscode/
+.idea/
+
+# Project-local caches
+.cache/
+.tmp/
+tmp/
+
+# Data and large generated files
+data/
+*.csv
+*.jsonl
+*.parquet
+*.sqlite3
+
+# Optional: keep local notes out of git if you prefer
+# wiki/notes-local/

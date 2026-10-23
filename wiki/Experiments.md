@@ -1,0 +1,134 @@
+# Experimental Research Questions and Results Plan
+
+## Research questions
+
+### RQ1: Does adaptive reasoning control improve performance at matched computation?
+
+Compare the learned controller against linear chains of thought and fixed search or repair schedules.
+
+The central plot should be accuracy versus total generated tokens, including:
+
+- controller calls,
+- revisions,
+- branch exploration,
+- abandoned trajectories.
+
+A convincing result is not simply improved accuracy. The learned controller should outperform fixed alternatives on at least part of the matched-cost frontier.
+
+### RQ2: When should a reasoning step be revised rather than branched?
+
+This is likely the most distinctive part of the paper.
+
+We distinguish three reasoning states:
+
+- Local repair: a prior inference is wrong, but most of the reasoning structure remains useful.
+- Global ambiguity: multiple interpretations remain plausible, making branching valuable.
+- Near completion: the answer is already supported and additional reasoning mostly wastes compute.
+
+These states should be inferred retrospectively from counterfactual rollout outcomes rather than assigned by assumption.
+
+The key test is whether the controller chooses different actions for these states and whether those choices improve final performance.
+
+### RQ3: Does a controller learn transferable reasoning behavior?
+
+Train on GSM8K and HotpotQA, then evaluate on FOLIO and GSM-Symbolic without updating the controller.
+
+This is demanding because the domains and step structures differ. A weaker but informative setting is to allow light adaptation on the target domain.
+
+The key distinction is whether the policy transfers directly, benefits from light adaptation, or must be retrained.
+
+### RQ4: How does the controller change when the action executors improve?
+
+GEPA improves the operation instructions ($\psi_a$) while the controller ($\phi$) is held fixed or retrained.
+
+- Does a controller trained with default executors transfer to GEPA-improved executors without retraining?
+- Do learned action frequencies shift once, for example, Revise actually repairs errors instead of rewording them?
+
+This tests whether the controller learned general reasoning decisions or overfitted to particular action implementations, and complements the cross-dataset transfer of RQ3. See [System-Architecture](System-Architecture.md).
+
+## Baselines and comparison methods
+
+| Method | Continue | Revise | Branch | Learned control |
+| --- | --- | --- | --- | --- |
+| Greedy CoT | ✓ | — | — | — |
+| Self-consistency | ✓ | — | Independent traces | — |
+| Self-Refine / fixed reflection | ✓ | ✓ | — | — |
+| Tree-of-Thoughts | ✓ | Backtracking | ✓ | — |
+| Fixed search | ✓ | ✓ | ✓ | — |
+| Process-verifier-guided search | ✓ | ✓ | ✓ | — |
+| GEPA-optimised reasoning program | ✓ | Configurable | Configurable | Offline program optimisation |
+| Proposed controller | ✓ | ✓ | ✓ | State-dependent policy |
+
+GEPA and DSPy can serve four distinct roles in this project, not just this one baseline row; see [GEPA-and-DSPy](GEPA-and-DSPy.md). The most interesting second role is running GEPA over the controller's own action-selection prompt on the Week-2 counterfactual rollouts, giving an interpretable natural-language controller to compare against the neural action-value head. The full three-layer architecture (DSPy executors, GEPA instruction optimisation, TorchRL selection) is specified in [System-Architecture](System-Architecture.md).
+
+## Central factorial experiment: controller × action instructions
+
+The main comparison crosses controller design with instruction quality (see [System-Architecture](System-Architecture.md)):
+
+| Controller | Action instructions | Isolates |
+| --- | --- | --- |
+| Fixed rules | Default DSPy | baseline |
+| Fixed rules | GEPA-optimised | value of better execution |
+| GEPA-optimised LLM policy | Default DSPy | value of reflective selection |
+| GEPA-optimised LLM policy | GEPA-optimised | interaction at the prompt level |
+| TorchRL policy | Default DSPy | value of learned sequential selection |
+| TorchRL policy | GEPA-optimised | full combination |
+
+Fairness rules:
+
+- GEPA optimisation and controller training use the same training pool; optimisation costs are reported separately and counted in the total budget.
+- Disclose the reflector model whenever it is stronger than the deployment model.
+- Held-out test sets are used only for final evaluation, never for reflective optimisation or controller training.
+
+## Indispensable ablations
+
+The paper should include the following ablations:
+
+- Continue/Stop
+- Continue/Revise/Stop
+- Continue/Branch/Stop
+- Full four-action policy
+- Random controller with the same action frequencies and token budget
+
+These ablations are essential for showing that each operation contributes meaningfully.
+
+## What the paper should contain
+
+### Main result plots
+
+- Accuracy vs token cost curve
+- Compact table of overall performance
+- Revise-vs-branch intervention plot
+- Action distribution breakdown by reasoning phase
+- Domain-transfer table across train/test settings
+
+### Qualitative analysis
+
+One reasoning trajectory diagram should show a real HotpotQA example in which:
+
+- an intermediate entity identification is wrong,
+- the controller chooses revise or branch,
+- the final answer is resolved successfully or not.
+
+The qualitative comparison should contrast the selected action against an alternative action at the same state, not just depict a successful trajectory.
+
+## Recovery vs damage
+
+The paper should report both:
+
+- recovery: how often the model repairs an initially wrong trajectory,
+- damage: how often it turns an initially correct trajectory into a wrong one.
+
+Recovery alone can be misleading.
+
+## Engineering defaults to validate
+
+Initial defaults for the pilot should include:
+
+- Reasoning models: Llama-3.1-8B-Instruct and Qwen2.5-7B-Instruct
+- Controller: frozen text encoder with small action-value head
+- Action budget: at most two active branches and two revisions per problem in pilot
+- Evaluation: three decoding seeds
+- Paired comparisons on identical problem instances
+
+These are defaults to be validated, not methodological claims.
