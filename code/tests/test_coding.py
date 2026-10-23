@@ -24,6 +24,7 @@ def test_parse_sample_tests_from_real_livecodebench_statement():
     tests = parse_sample_tests(good_kid["question_content"])
     assert len(tests) == 1
     assert tests[0]["input"].startswith("4")
+    assert "\n\n" not in tests[0]["input"]  # markdown blank lines must be normalised away
     assert tests[0]["output"].splitlines()[0] == "16"
     assert "430467210" in tests[0]["output"]
 

@@ -116,11 +116,16 @@ _SAMPLE_RE = re.compile(
 )
 
 
+def _normalize_ws(text: str) -> str:
+    """Collapse the markdown blank lines LiveCodeBench embeds between every token."""
+    return re.sub(r"\n\s*\n", "\n", text).strip()
+
+
 def parse_sample_tests(question_content: str, cap: int = 8) -> List[Dict[str, str]]:
     """Extract embedded sample input/output pairs from a LiveCodeBench statement."""
     pairs = []
     for match in _SAMPLE_RE.finditer(question_content):
-        given, expected = match.group(1).strip(), match.group(2).strip()
+        given, expected = _normalize_ws(match.group(1)), _normalize_ws(match.group(2))
         if given and expected:
             pairs.append({"input": given, "output": expected})
     return pairs[:cap]
