@@ -7,6 +7,7 @@ This workspace includes the research vault and the runnable starter codebase for
 - [wiki/Home.md](wiki/Home.md)
 - [wiki/Research-Plan.md](wiki/Research-Plan.md)
 - [wiki/Datasets.md](wiki/Datasets.md)
+- [wiki/Coding-Domain.md](wiki/Coding-Domain.md)
 - [wiki/Controller-and-Tasks.md](wiki/Controller-and-Tasks.md)
 - [wiki/System-Architecture.md](wiki/System-Architecture.md)
 - [wiki/Experiments.md](wiki/Experiments.md)

@@ -1,0 +1,522 @@
+{
+  "model": "llama3.1",
+  "seed": 0,
+  "e1": {
+    "with_demos": {
+      "accuracy": 0.85,
+      "correct": 17,
+      "n": 20,
+      "tokens_in": 79417,
+      "tokens_out": 5780,
+      "tokens_out_per_problem": 289.0,
+      "seconds": 594.8
+    },
+    "no_demos": {
+      "accuracy": 0.25,
+      "correct": 5,
+      "n": 20,
+      "tokens_in": 29512,
+      "tokens_out": 11921,
+      "tokens_out_per_problem": 596.05,
+      "seconds": 1088.7
+    }
+  },
+  "e2": {
+    "continue": {
+      "recovery": 0.7,
+      "correct": 7,
+      "n": 10
+    },
+    "revise": {
+      "recovery": 0.7,
+      "correct": 7,
+      "n": 10
+    }
+  },
+  "records": {
+    "e1": [
+      {
+        "condition": "with_demos",
+        "question": "Natalia sold clips to 48 of her friends in April, and then she sold half as many",
+        "gold": "72",
+        "pred": "72",
+        "correct": true,
+        "n_steps": 3
+      },
+      {
+        "condition": "with_demos",
+        "question": "Weng earns $12 an hour for babysitting. Yesterday, she just did 50 minutes of ba",
+        "gold": "10",
+        "pred": "10",
+        "correct": true,
+        "n_steps": 3
+      },
+      {
+        "condition": "with_demos",
+        "question": "Betty is saving money for a new wallet which costs $100. Betty has only half of ",
+        "gold": "5",
+        "pred": "5",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "Julie is reading a 120-page book. Yesterday, she was able to read 12 pages and t",
+        "gold": "42",
+        "pred": "42",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "James writes a 3-page letter to 2 different friends twice a week.  How many page",
+        "gold": "624",
+        "pred": "2196",
+        "correct": false,
+        "n_steps": 3
+      },
+      {
+        "condition": "with_demos",
+        "question": "Mark has a garden with flowers. He planted plants of three different colors in i",
+        "gold": "35",
+        "pred": "35",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "Albert is wondering how much pizza he can eat in one day. He buys 2 large pizzas",
+        "gold": "48",
+        "pred": "48",
+        "correct": true,
+        "n_steps": 3
+      },
+      {
+        "condition": "with_demos",
+        "question": "Ken created a care package to send to his brother, who was away at boarding scho",
+        "gold": "16",
+        "pred": "16",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "Alexis is applying for a new job and bought a new set of business clothes to wea",
+        "gold": "41",
+        "pred": "41",
+        "correct": true,
+        "n_steps": 3
+      },
+      {
+        "condition": "with_demos",
+        "question": "Tina makes $18.00 an hour.  If she works more than 8 hours per shift, she is eli",
+        "gold": "990",
+        "pred": "990",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "A deep-sea monster rises from the waters once every hundred years to feast on a ",
+        "gold": "121",
+        "pred": "121",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "Tobias is buying a new pair of shoes that costs $95. He has been saving up his m",
+        "gold": "5",
+        "pred": "5",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "Randy has 60 mango trees on his farm. He also has 5 less than half as many cocon",
+        "gold": "85",
+        "pred": "85",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "Jasper will serve charcuterie at his dinner party. He buys 2 pounds of cheddar c",
+        "gold": "35",
+        "pred": "35",
+        "correct": true,
+        "n_steps": 3
+      },
+      {
+        "condition": "with_demos",
+        "question": "Joy can read 8 pages of a book in 20 minutes. How many hours will it take her to",
+        "gold": "5",
+        "pred": "5",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "James creates a media empire.  He creates a movie for $2000.  Each DVD cost $6 t",
+        "gold": "448000",
+        "pred": "9 * 500 * 5 * 20 = 450,000",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "The profit from a business transaction is shared among 2 business partners, Mike",
+        "gold": "800",
+        "pred": "Mike's share is 2/7 of the total, so Johnson's share is 5/7 of the total.\nJohnson's share is $2500, so the total is 2500 / (5/7) = 2500 * (7/5) = $3500.\nMike's share is 2/7 of the total, so Mike's share is 2/7 * 3500 = $1000.\nMike spent $200 on a shirt, so Mike has 1000 - 200 = $800.",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "In a truck, there are 26 pink hard hats, 15 green hard hats, and 24 yellow hard ",
+        "gold": "43",
+        "pred": "22 + 3 + 18 = 43",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "It takes Roque two hours to walk to work and one hour to ride his bike to work. ",
+        "gold": "16",
+        "pred": "12 + 12 = 24",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "with_demos",
+        "question": "Tim rides his bike back and forth to work for each of his 5 workdays.  His work ",
+        "gold": "16",
+        "pred": "16",
+        "correct": true,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "Natalia sold clips to 48 of her friends in April, and then she sold half as many",
+        "gold": "72",
+        "pred": "96",
+        "correct": false,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "Weng earns $12 an hour for babysitting. Yesterday, she just did 50 minutes of ba",
+        "gold": "10",
+        "pred": "$6",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "Betty is saving money for a new wallet which costs $100. Betty has only half of ",
+        "gold": "5",
+        "pred": "$25",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "Julie is reading a 120-page book. Yesterday, she was able to read 12 pages and t",
+        "gold": "42",
+        "pred": "24",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "James writes a 3-page letter to 2 different friends twice a week.  How many page",
+        "gold": "624",
+        "pred": "To find the total number of pages written per year, we need to multiply the number of pages written per week by the number of weeks in a year.\n\nFirst, let's calculate the number of pages written per week:\nJames writes a 3-page letter to 2 different friends twice a week. So, the total number of pages written per week is:\n3 pages/letter * 2 letters/week = 6 pages/week\n\nNext, let's calculate the number of weeks in a year:\nThere are 52 weeks in a year.\n\nNow, let's multiply the number of pages written per week by the number of weeks in a year:\n6 pages/week * 52 weeks/year = 312 pages/year",
+        "correct": false,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "Mark has a garden with flowers. He planted plants of three different colors in i",
+        "gold": "35",
+        "pred": "The total number of flowers is 10 (yellow) + 16 (purple) + 20 (green) = 46.",
+        "correct": false,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "Albert is wondering how much pizza he can eat in one day. He buys 2 large pizzas",
+        "gold": "48",
+        "pred": "Albert eats 48 slices of pizza that day.",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "Ken created a care package to send to his brother, who was away at boarding scho",
+        "gold": "16",
+        "pred": "2 pounds",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "Alexis is applying for a new job and bought a new set of business clothes to wea",
+        "gold": "41",
+        "pred": "$50",
+        "correct": false,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "Tina makes $18.00 an hour.  If she works more than 8 hours per shift, she is eli",
+        "gold": "990",
+        "pred": "First, we need to calculate Tina's hourly wage for overtime. This is her regular hourly wage ($18.00) + 1/2 her regular hourly wage ($18.00/2 = $9.00). So, her overtime hourly wage is $18.00 + $9.00 = $27.00.\n\nNext, we need to calculate the number of overtime hours worked. Tina works 10 hours per day for 5 days, for a total of 50 hours. She is eligible for overtime after 8 hours per shift, so she works 2 hours of overtime per day (10 hours - 8 hours = 2 hours). For 5 days, she works 10 hours of regular time and 10 hours of overtime time, for a total of 20 hours of overtime.\n\nNow, we can calculate Tina's total earnings. She earns $18.00 per hour for her regular time, so she earns $18.00 * 40 hours = $720.00 for her regular time. She earns $27.00 per hour for her overtime time, so she earns $27.00 * 20 hours = $540.00 for her overtime time. Her total earnings are $720.00 + $540.00 = $1260.00.",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "A deep-sea monster rises from the waters once every hundred years to feast on a ",
+        "gold": "121",
+        "pred": "Let's denote the number of people on the first ship as x. Since each new ship has twice as many people as the last ship, the number of people on the second ship is 2x, and the number of people on the third ship is 2(2x) = 4x.\n\nThe total number of people consumed over 300 years is 847. We can set up the equation: x + 2x + 4x = 847.\n\nSimplifying the equation, we get 7x = 847.\n\nDividing both sides by 7, we get x = 121.\n\nSo, the number of people on the ship the monster ate in the first hundred years is 121.",
+        "correct": true,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "Tobias is buying a new pair of shoes that costs $95. He has been saving up his m",
+        "gold": "5",
+        "pred": "Let's break down the problem step by step:\n\n1. Calculate the total amount Tobias saved from his allowance:\nTobias gets a $5 allowance a month for 3 months, so he saved $5 x 3 = $15.\n\n2. Calculate the total amount Tobias earned from mowing lawns:\nTobias mows 4 lawns at $15 each, so he earned $15 x 4 = $60.\n\n3. Calculate the total amount Tobias earned from shoveling driveways:\nLet's call the number of driveways he shoveled \"x\". Since he charges $7 per driveway, he earned $7x.\n\n4. Calculate the total amount Tobias spent on shoes:\nTobias spent $95 on shoes and had $15 in change, so he spent $95 - $15 = $80.\n\nNow, let's use the information to find the number of driveways he shoveled. We know that the total amount he earned from mowing lawns and shoveling driveways is $80 (since he spent $80 on shoes). We also know that he earned $60 from mowing lawns. Therefore, the amount he earned from shoveling driveways is $80 - $60 = $20.\n\nSince he charges $7 per driveway, we can set up the equation $7x = $20 to find the number of driveways he shoveled. Solving for x, we get x = $20 / $7 = 2.86 (round down to 2, since he can't shovel a fraction of a driveway).\n\nSo, Tobias shoveled 2 driveways.",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "Randy has 60 mango trees on his farm. He also has 5 less than half as many cocon",
+        "gold": "85",
+        "pred": "30",
+        "correct": false,
+        "n_steps": 2
+      },
+      {
+        "condition": "no_demos",
+        "question": "Jasper will serve charcuterie at his dinner party. He buys 2 pounds of cheddar c",
+        "gold": "35",
+        "pred": "The price of the cream cheese is $5, the price of the cold cuts is $20, and the total cost of the ingredients is $35.",
+        "correct": true,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "Joy can read 8 pages of a book in 20 minutes. How many hours will it take her to",
+        "gold": "5",
+        "pred": "To find the number of hours it takes Joy to read 120 pages, we need to follow the steps outlined in the history.\n\nFirst, we calculate the number of pages Joy can read per minute:\n8 pages / 20 minutes = 0.4 pages per minute\n\nNext, we determine the total number of minutes it takes to read 120 pages:\n120 pages / 0.4 pages per minute = 300 minutes\n\nFinally, we convert the total minutes to hours:\n300 minutes / 60 = 5 hours",
+        "correct": true,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "James creates a media empire.  He creates a movie for $2000.  Each DVD cost $6 t",
+        "gold": "448000",
+        "pred": "The profit James makes in 20 weeks is $1,250,000.",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "The profit from a business transaction is shared among 2 business partners, Mike",
+        "gold": "800",
+        "pred": "Mike's share of the profit is $2000. After spending $200 on a shirt, Mike will have $1800.",
+        "correct": false,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "In a truck, there are 26 pink hard hats, 15 green hard hats, and 24 yellow hard ",
+        "gold": "43",
+        "pred": "The total number of hard hats remaining in the truck is 26 - 4 - 6 + 12 - 6 = 22.",
+        "correct": false,
+        "n_steps": 4
+      },
+      {
+        "condition": "no_demos",
+        "question": "It takes Roque two hours to walk to work and one hour to ride his bike to work. ",
+        "gold": "16",
+        "pred": "(2 hours * 3 times) + (1 hour * 2 times) = 6 hours + 2 hours = 8 hours",
+        "correct": false,
+        "n_steps": 3
+      },
+      {
+        "condition": "no_demos",
+        "question": "Tim rides his bike back and forth to work for each of his 5 workdays.  His work ",
+        "gold": "16",
+        "pred": "The total weekly time spent biking is 20 miles/day * 5 days/week * 2 trips/day * 1 hour/25 miles + 200 miles / 25 miles/hour = 16 hours/week",
+        "correct": true,
+        "n_steps": 4
+      }
+    ],
+    "e2": [
+      {
+        "arm": "continue",
+        "question": "Natalia sold clips to 48 of her friends in April, and then she sold half as many",
+        "gold": "72",
+        "pred": "24",
+        "correct": false,
+        "target_step": "Natalia sold 51+24 = 72 clips altogether in April and May."
+      },
+      {
+        "arm": "revise",
+        "question": "Natalia sold clips to 48 of her friends in April, and then she sold half as many",
+        "gold": "72",
+        "pred": "48",
+        "correct": false,
+        "target_step": "Natalia sold 51+24 = 72 clips altogether in April and May."
+      },
+      {
+        "arm": "continue",
+        "question": "Weng earns $12 an hour for babysitting. Yesterday, she just did 50 minutes of ba",
+        "gold": "10",
+        "pred": "10",
+        "correct": true,
+        "target_step": "Working 53 minutes, she earned 0.2 x 50 = $10."
+      },
+      {
+        "arm": "revise",
+        "question": "Weng earns $12 an hour for babysitting. Yesterday, she just did 50 minutes of ba",
+        "gold": "10",
+        "pred": "10",
+        "correct": true,
+        "target_step": "Working 53 minutes, she earned 0.2 x 50 = $10."
+      },
+      {
+        "arm": "continue",
+        "question": "Betty is saving money for a new wallet which costs $100. Betty has only half of ",
+        "gold": "5",
+        "pred": "50",
+        "correct": false,
+        "target_step": "This means, Betty needs 103 - 50 - 30 - 15 = $5 more."
+      },
+      {
+        "arm": "revise",
+        "question": "Betty is saving money for a new wallet which costs $100. Betty has only half of ",
+        "gold": "5",
+        "pred": "50",
+        "correct": false,
+        "target_step": "This means, Betty needs 103 - 50 - 30 - 15 = $5 more."
+      },
+      {
+        "arm": "continue",
+        "question": "Julie is reading a 120-page book. Yesterday, she was able to read 12 pages and t",
+        "gold": "42",
+        "pred": "42",
+        "correct": true,
+        "target_step": "Since she wants to read half of the remaining pages tomorrow"
+      },
+      {
+        "arm": "revise",
+        "question": "Julie is reading a 120-page book. Yesterday, she was able to read 12 pages and t",
+        "gold": "42",
+        "pred": "42",
+        "correct": true,
+        "target_step": "Since she wants to read half of the remaining pages tomorrow"
+      },
+      {
+        "arm": "continue",
+        "question": "James writes a 3-page letter to 2 different friends twice a week.  How many page",
+        "gold": "624",
+        "pred": "2196",
+        "correct": false,
+        "target_step": "That means he writes 15*52=624 pages a year"
+      },
+      {
+        "arm": "revise",
+        "question": "James writes a 3-page letter to 2 different friends twice a week.  How many page",
+        "gold": "624",
+        "pred": "2196",
+        "correct": false,
+        "target_step": "That means he writes 15*52=624 pages a year"
+      },
+      {
+        "arm": "continue",
+        "question": "Mark has a garden with flowers. He planted plants of three different colors in i",
+        "gold": "35",
+        "pred": "35",
+        "correct": true,
+        "target_step": "So in total Mark has 31 + 7 = 35 plants in his garden."
+      },
+      {
+        "arm": "revise",
+        "question": "Mark has a garden with flowers. He planted plants of three different colors in i",
+        "gold": "35",
+        "pred": "35",
+        "correct": true,
+        "target_step": "So in total Mark has 31 + 7 = 35 plants in his garden."
+      },
+      {
+        "arm": "continue",
+        "question": "Albert is wondering how much pizza he can eat in one day. He buys 2 large pizzas",
+        "gold": "48",
+        "pred": "48",
+        "correct": true,
+        "target_step": "He eats 51 pieces because 32 + 16 = 48"
+      },
+      {
+        "arm": "revise",
+        "question": "Albert is wondering how much pizza he can eat in one day. He buys 2 large pizzas",
+        "gold": "48",
+        "pred": "48",
+        "correct": true,
+        "target_step": "He eats 51 pieces because 32 + 16 = 48"
+      },
+      {
+        "arm": "continue",
+        "question": "Ken created a care package to send to his brother, who was away at boarding scho",
+        "gold": "16",
+        "pred": "16",
+        "correct": true,
+        "target_step": "And finally, he added enough gummy worms to double the weigh"
+      },
+      {
+        "arm": "revise",
+        "question": "Ken created a care package to send to his brother, who was away at boarding scho",
+        "gold": "16",
+        "pred": "16",
+        "correct": true,
+        "target_step": "And finally, he added enough gummy worms to double the weigh"
+      },
+      {
+        "arm": "continue",
+        "question": "Alexis is applying for a new job and bought a new set of business clothes to wea",
+        "gold": "41",
+        "pred": "41",
+        "correct": true,
+        "target_step": "Thus, Alexis paid S = 187 - 143 = $41 for the shoes."
+      },
+      {
+        "arm": "revise",
+        "question": "Alexis is applying for a new job and bought a new set of business clothes to wea",
+        "gold": "41",
+        "pred": "41",
+        "correct": true,
+        "target_step": "Thus, Alexis paid S = 187 - 143 = $41 for the shoes."
+      },
+      {
+        "arm": "continue",
+        "question": "Tina makes $18.00 an hour.  If she works more than 8 hours per shift, she is eli",
+        "gold": "990",
+        "pred": "990",
+        "correct": true,
+        "target_step": "In 8 days her base pay is $720.00 and she makes $270.00 in o"
+      },
+      {
+        "arm": "revise",
+        "question": "Tina makes $18.00 an hour.  If she works more than 8 hours per shift, she is eli",
+        "gold": "990",
+        "pred": "990",
+        "correct": true,
+        "target_step": "In 8 days her base pay is $720.00 and she makes $270.00 in o"
+      }
+    ]
+  }
+}

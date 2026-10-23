@@ -34,18 +34,50 @@
 - Good external generalization experiment
 - Focuses on code execution and input/output prediction
 - Useful as an appendix to show the controller is not limited to ordinary natural-language reasoning
+- Largely superseded as the code anchor now that coding is the primary domain (see below)
+
+## Coding datasets (primary domain, added 2026-10-23)
+
+Coding becomes the primary experimental domain because executable feedback gives objective intermediate rewards; see [Coding-Domain](Coding-Domain.md).
+
+### LiveCodeBench
+
+- Primary pilot and evaluation set
+- Competitive programming with executable tests and contest dates for contamination-aware temporal splits
+- Public samples serve as development feedback; private/held-out tests are for final scoring only
+
+### CodeContests
+
+- Controller training pool when more trajectories are needed
+- Richer competitive-programming tasks with sandboxed test environments
+- Enables cross-dataset evaluation against LiveCodeBench
+
+### SWE-bench Verified
+
+- Realistic repository-level transfer experiment (500 validated tasks; 50-100 issue budget)
+- Distinguishes local patch revision from exploring alternative fixes
+- External validation once the controller works on function-level tasks
 
 ## Recommended allocation
 
 | Dataset | Pilot | Controller training | Main evaluation | Main question |
 | --- | --- | --- | --- | --- |
-| GSM8K | Yes | Yes | Yes | Can revision fix intermediate mistakes? |
-| HotpotQA | Yes | Yes | Yes | Can control repair evidence chains? |
-| FOLIO | Yes | Limited | Yes | Does the controller preserve logical validity? |
+| LiveCodeBench | Yes | No | Yes | Revise vs branch under executable feedback? |
+| CodeContests | No | Yes | Cross-check | Does the policy transfer across coding sets? |
+| SWE-bench Verified | No | No | Transfer | Does control transfer to repository repair? |
+| GSM8K | Yes | Yes | Legacy pilot | Can revision fix intermediate mistakes? |
+| HotpotQA | Yes | Limited | Yes (generalisation anchor) | Can control repair evidence chains? |
+| FOLIO | Yes | Limited | Yes (generalisation anchor) | Does the controller preserve logical validity? |
 | GSM-Symbolic | No | No | Yes | Does the policy transfer under problem changes? |
-| CRUXEval | No | No | Optional | Does it generalise to code reasoning? |
+| CRUXEval | No | No | Optional | Superseded by the coding-primary plan |
 
 ## Important split conventions
+
+### LiveCodeBench
+
+- Separate training and evaluation windows by problem contest date
+- Public sample tests are development feedback only; private or held-out tests decide final scores
+- Never let the controller or GEPA optimise against the tests used for final scoring
 
 ### HotpotQA
 
@@ -91,6 +123,7 @@ These are verbatim records from the actual datasets (not placeholders), fetched 
 
 - Fetch script: [code/loaders/fetch_samples.py](../code/loaders/fetch_samples.py)
 - Saved samples (20 rows each): `code/data/raw/gsm8k_train_sample.jsonl`, `code/data/raw/hotpotqa_distractor_train_sample.jsonl`
+- Coding sample (10 rows): `code/data/raw/livecodebench_sample.jsonl` — a real "Good Kid" example with parsed sample tests appears in [Coding-Domain](Coding-Domain.md)
 - These samples also seed the DSPy program demonstrations: see `code/cot_control/programs/demos.py`
 - Fetched: 2026-10-23
 

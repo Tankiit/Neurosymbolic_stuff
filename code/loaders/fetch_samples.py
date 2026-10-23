@@ -1,4 +1,4 @@
-"""Fetch small real samples of GSM8K and HotpotQA via HuggingFace datasets.
+"""Fetch small real samples of GSM8K, HotpotQA, and LiveCodeBench via HuggingFace datasets.
 
 Run inside the torch-multimodal conda environment:
 
@@ -10,14 +10,17 @@ Writes JSONL samples to data/raw/ and prints compact examples used in the wiki.
 
 from __future__ import annotations
 
+import itertools
 import json
 from pathlib import Path
+from typing import List
 
 from datasets import load_dataset
 
 RAW_DIR = Path(__file__).resolve().parents[1] / "data" / "raw"
 N_SAVE = 20  # examples per dataset saved to data/raw
 N_SHOW = 2   # examples per dataset printed for the wiki
+MAX_TEST_CHARS = 2000
 
 
 def fetch_gsm8k() -> list[dict]:
@@ -61,6 +64,43 @@ def fetch_hotpotqa() -> list[dict]:
     return rows
 
 
+def _normalize_tests(test_cases, cap: int = 5) -> list[dict]:
+    """LiveCodeBench test cases -> [{"input": str, "output": str}], capped and truncated."""
+    pairs: list[dict] = []
+    if isinstance(test_cases, dict):
+        raw = zip(test_cases.get("inputs", []), test_cases.get("outputs", []))
+        pairs = [{"input": str(i), "output": str(o)} for i, o in raw]
+    elif isinstance(test_cases, list):
+        for case in test_cases:
+            if isinstance(case, dict) and "input" in case:
+                pairs.append({"input": str(case.get("input", "")), "output": str(case.get("output", ""))})
+    for pair in pairs:
+        pair["input"] = pair["input"][:MAX_TEST_CHARS]
+        pair["output"] = pair["output"][:MAX_TEST_CHARS]
+    return pairs[:cap]
+
+
+def fetch_livecodebench(n: int = 10) -> list[dict]:
+    ds = load_dataset(
+        "livecodebench/code_generation_lite", split="test", streaming=True, trust_remote_code=True
+    )
+    rows = []
+    for rec in itertools.islice(iter(ds), n):
+        rows.append(
+            {
+                "question_id": rec["question_id"],
+                "question_title": rec["question_title"],
+                "question_content": rec["question_content"][:6000],
+                "difficulty": rec["difficulty"],
+                "contest_date": str(rec["contest_date"]),
+                "platform": rec["platform"],
+                "starter_code": rec["starter_code"],
+                "public_tests": _normalize_tests(rec.get("public_test_cases")),
+            }
+        )
+    return rows
+
+
 def save_jsonl(path: Path, rows: list[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
@@ -76,12 +116,19 @@ def main() -> None:
     hotpot = fetch_hotpotqa()
     save_jsonl(RAW_DIR / "hotpotqa_distractor_train_sample.jsonl", hotpot)
 
+    lcb = fetch_livecodebench()
+    save_jsonl(RAW_DIR / "livecodebench_sample.jsonl", lcb)
+
     print("\n===== GSM8K examples =====")
     for row in gsm8k[:N_SHOW]:
         print(json.dumps(row, ensure_ascii=False, indent=2))
 
     print("\n===== HotpotQA examples =====")
     for row in hotpot[:N_SHOW]:
+        print(json.dumps(row, ensure_ascii=False, indent=2))
+
+    print("\n===== LiveCodeBench examples =====")
+    for row in lcb[:N_SHOW]:
         print(json.dumps(row, ensure_ascii=False, indent=2))
 
 

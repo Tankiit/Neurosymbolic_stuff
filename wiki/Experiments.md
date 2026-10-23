@@ -132,3 +132,19 @@ Initial defaults for the pilot should include:
 - Paired comparisons on identical problem instances
 
 These are defaults to be validated, not methodological claims.
+
+## Initial pilot results (2026-10-23)
+
+First run of the real pipeline (llama3.1:8b via local Ollama, temperature 0, k=3 demonstrations, CONTINUE-only trajectories, 20 real GSM8K train problems; details in `code/runs/pilot_gsm8k_summary.md`):
+
+- Demonstrations dominate execution quality: demo-seeded programs score 85% versus 25% demo-free, while generating about half the tokens per problem. Execution quality (the GEPA lever) must be pinned down before controller comparisons, otherwise it swamps the control signal.
+- The first matched-state action study (REVISE vs CONTINUE at corrupted prefixes) returned a null result with 10/10 per-problem agreement: the final-answer stage recomputes from the question, so the intermediate action has no causal effect on the outcome.
+- Design fix required: the final-answer module must extract from the reasoning history rather than re-solve from the question (or intermediate steps must be scored directly). Otherwise action effects are unmeasurable — an architecture correction, not evidence against the control problem.
+
+## Coding-domain instantiation (2026-10-23)
+
+Coding is now the primary domain because executable feedback makes intermediate rewards objective; full plan in [Coding-Domain](Coding-Domain.md). Consequences for this page:
+
+- The central factorial and RQ1-RQ4 carry over, with pass rate versus total execution cost as the headline metric (not pass@1 alone).
+- Coding baselines must include plain generation, fixed self-debugging, best-of-N, and tree search, plus agent-style systems (e.g., SWE-agent) as reference points; the novelty claim is the learned action-selection policy at matched compute, not the combination of execution feedback with revision.
+- The counterfactual first experiment runs on LiveCodeBench: execute Continue / Revise / Branch / Stop from identical program states, complete under matched budget, and record test success, patch size, runtime, and tokens. Public sample tests are development feedback; held-out tests decide final scores.

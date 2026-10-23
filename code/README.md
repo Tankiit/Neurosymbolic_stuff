@@ -17,8 +17,9 @@ The codebase is organized around the core research separation described in the p
 ```text
 cot_control/
 ├── programs/
-│   ├── signatures.py        # real DSPy signatures (requires dspy; torch-multimodal env)
+│   ├── signatures.py        # natural-language DSPy signatures (requires dspy)
 │   ├── demos.py             # demonstrations built from the real GSM8K / HotpotQA samples
+│   ├── coding.py            # coding-domain operators + LiveCodeBench sample parser
 │   ├── decompose.py
 │   ├── continue_step.py
 │   ├── revise_step.py
@@ -42,6 +43,7 @@ cot_control/
 ├── evaluation/
 │   ├── action_outcomes.py
 │   ├── accuracy_cost.py
+│   ├── execution.py         # sandboxed stdin/stdout test runner (pilot-grade)
 │   ├── transfer.py
 │   └── __init__.py
 ├── __init__.py

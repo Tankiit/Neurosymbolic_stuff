@@ -50,8 +50,9 @@ def configure_lm(model: str, base_url: str, max_tokens: int = 512) -> dspy.LM:
     return lm
 
 
-def make_programs(with_demos: bool, seed: int = 0) -> Dict[str, object]:
+def make_programs(with_demos: bool, seed: int = 0, demos_k: int = 3) -> Dict[str, object]:
     demos = build_program_demos(seed=seed) if with_demos else {}
+    demos = {key: rows[:demos_k] for key, rows in demos.items()}
     return {
         "decompose": DecomposeProgram(demos=demos.get("decompose")),
         "continue": ContinueStepProgram(demos=demos.get("continue")),
@@ -136,6 +137,7 @@ def main() -> None:
     parser.add_argument("--n", type=int, default=20, help="E1 problems")
     parser.add_argument("--e2-n", type=int, default=10, help="E2 problems")
     parser.add_argument("--max-steps", type=int, default=4)
+    parser.add_argument("--demos-k", type=int, default=3, help="demonstrations attached per program")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--out", default=str(RUNS_DIR / "pilot_gsm8k.json"))
     args = parser.parse_args()
@@ -148,7 +150,7 @@ def main() -> None:
 
     # E1: demos vs no-demos on CONTINUE-only rollouts
     for condition, with_demos in (("with_demos", True), ("no_demos", False)):
-        programs = make_programs(with_demos, seed=args.seed)
+        programs = make_programs(with_demos, seed=args.seed, demos_k=args.demos_k)
         mark = len(lm.history)
         t0 = time.time()
         correct = 0
@@ -173,7 +175,7 @@ def main() -> None:
         print(f"[E1:{condition}] accuracy {correct}/{len(rows)} | out-tokens/problem {tout/len(rows):.0f} | {time.time()-t0:.0f}s")
 
     # E2: matched corrupted states, REVISE vs CONTINUE
-    programs = make_programs(True, seed=args.seed)
+    programs = make_programs(True, seed=args.seed, demos_k=args.demos_k)
     arms = {"continue": [0, 0], "revise": [0, 0]}  # [correct, total]
     for row in rows[: args.e2_n]:
         state = corrupted_state(row, rng)

@@ -6,6 +6,15 @@ carries demonstrations built from the real GSM8K / HotpotQA samples
 """
 
 from .branch_step import BranchStepProgram
+from .coding import (
+    BranchAlgorithmProgram,
+    ContinueImplementationProgram,
+    PlanSolutionProgram,
+    ReviseImplementationProgram,
+    SubmitProgramProgram,
+    build_coding_programs,
+    parse_sample_tests,
+)
 from .continue_step import ContinueStepProgram
 from .decompose import DecomposeProgram
 from .demos import build_program_demos, build_programs
@@ -34,4 +43,11 @@ __all__ = [
     "SelectAction",
     "build_program_demos",
     "build_programs",
+    "PlanSolutionProgram",
+    "ContinueImplementationProgram",
+    "ReviseImplementationProgram",
+    "BranchAlgorithmProgram",
+    "SubmitProgramProgram",
+    "build_coding_programs",
+    "parse_sample_tests",
 ]

@@ -10,6 +10,7 @@ This vault collects the core ideas, datasets, controller formulation, and experi
 
 - [Research-Plan](Research-Plan.md)
 - [Datasets](Datasets.md)
+- [Coding-Domain](Coding-Domain.md)
 - [Controller-and-Tasks](Controller-and-Tasks.md)
 - [System-Architecture](System-Architecture.md)
 - [Experiments](Experiments.md)
@@ -22,10 +23,10 @@ The paper should emphasize the decision policy itself, not simply the addition o
 
 ## Primary paper focus
 
-- Multi-hop QA: HotpotQA
-- Natural-language logic: FOLIO
-- Mathematical reasoning: GSM8K and GSM-Symbolic
-- Optional generalization anchor: CRUXEval
+- Primary domain: coding with executable feedback — LiveCodeBench (pilot/evaluation), CodeContests (training), SWE-bench Verified (transfer)
+- Non-coding generalisation anchors: HotpotQA, FOLIO
+- Mathematical reasoning pilot: GSM8K and GSM-Symbolic
+- CRUXEval superseded by the coding-primary plan (2026-10-23)
 
 ## Initial target
 

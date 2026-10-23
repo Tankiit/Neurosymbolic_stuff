@@ -12,6 +12,8 @@ The three frameworks are combined with distinct responsibilities rather than one
 
 The central distinction: GEPA optimises how an action is performed; the controller learns when it should be performed.
 
+The layers generalise across domains. The natural-language instantiation lives in `programs/signatures.py`; the coding instantiation (plan / implement / repair / alternative-algorithm / submit, with compiler and test feedback driving GEPA) lives in `programs/coding.py` with sandboxed execution in `evaluation/execution.py`; see [Coding-Domain](Coding-Domain.md) for why code is now the primary domain.
+
 ## Formalisation
 
 Extends the objective in [Controller-and-Tasks](Controller-and-Tasks.md):
@@ -72,11 +74,13 @@ The scaffold exists under `code/cot_control/`; current implementations are mock-
 | Architecture layer | Code location | Status |
 | --- | --- | --- |
 | Programs (action execution) | `programs/` — real DSPy predictors over `signatures.py`, demonstrations from the real GSM8K / HotpotQA samples via `demos.py` | real (LM required to call) |
+| Coding operators | `programs/coding.py` (PlanSolution / ContinueImplementation / ReviseImplementation / BranchAlgorithm / SubmitProgram) | real, no demos yet |
+| Sandboxed execution | `evaluation/execution.py` — temp dir, minimal env, timeouts, rlimits | pilot-grade (not a container) |
 | Environment (state, transitions, rollouts) | `environment/` (`reasoning_state.py`, `transitions.py`, `rollout.py`) | mock |
 | Controllers | `controllers/` (`fixed.py`, `dspy_controller.py`, `torchrl_controller.py`) | mock |
 | Instruction optimisation | `optimization/gepa_programs.py` | skeleton |
 | Controller training | `optimization/train_controller.py`, legacy `experiment.py` | skeleton + working mock pipeline |
-| Evaluation | `evaluation/` (`action_outcomes.py`, `accuracy_cost.py`, `transfer.py`) | skeleton |
+| Evaluation | `evaluation/` (`action_outcomes.py`, `accuracy_cost.py`, `transfer.py`, `execution.py`) | skeleton |
 
 Demonstration provenance: Continue/Decompose demos are teacher-forced gold GSM8K solution lines; Revise demos pair a controlled numeric corruption with the gold repair; FinalAnswer demos use gold GSM8K solutions and HotpotQA supporting-fact sentences. Branch deliberately has no demonstrations — single gold solutions contain no alternative paths, so branch demos must come from the Week-2 multi-path rollouts.
 
